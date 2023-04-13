@@ -168,7 +168,7 @@ employee_id as »ç¿ø¹øÈ£,
 first_name||' '|| last_name as »ç¿ø¸í,
 hire_date as ÀÔ»çÀÏÀÚ,
 trunc((sysdate-hire_date)/365,0) as ±Ù¼Ó³â¼ö
-from employees where  >17 order by ±Ù¼Ó³â¼ö desc;
+from employees where trunc((sysdate-hire_date)/365,0) > 17 order by ±Ù¼Ó³â¼ö desc;
 /*
 ¹®Á¦ 2.
 EMPLOYEE Å×ÀÌºíÀÇ manager_idÄÃ·³À» È®ÀÎÇÏ¿© first_name, manager_id, Á÷±ŞÀ» Ãâ·ÂÇÕ´Ï´Ù.
@@ -177,7 +177,7 @@ EMPLOYEE Å×ÀÌºíÀÇ manager_idÄÃ·³À» È®ÀÎÇÏ¿© first_name, manager_id, Á÷±ŞÀ» Ãâ·ÂÇ
 121ÀÌ¶ó¸é ¡®´ë¸®¡¯
 122¶ó¸é ¡®°úÀå¡¯
 ³ª¸ÓÁö´Â ¡®ÀÓ¿ø¡¯ À¸·Î Ãâ·ÂÇÕ´Ï´Ù.
-Á¶°Ç 1) department_id°¡ 100ÀÎ »ç¶÷µéÀ» ´ë»óÀ¸·Î¸¸ Á¶È¸ÇÕ´Ï´Ù
+Á¶°Ç 1) department_id°¡ 50ÀÎ »ç¶÷µéÀ» ´ë»óÀ¸·Î¸¸ Á¶È¸ÇÕ´Ï´Ù
 */
 select first_name, manager_id, 
 (case manager_id 
