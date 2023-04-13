@@ -188,3 +188,49 @@ when 122 then '과장'
 else '임원' 
 end) as 직급
 from employees where department_id = 50;
+
+-------------------------------------------------------------
+
+select
+    salary,
+    employee_id,
+    first_name,
+    decode(
+        salary,
+        salary >=4000, 'A',
+        salary >=3000 and salary <=3999, 'B',
+        salary >=2000 and salary <=2999, 'C',
+        salary >=1000 and salary <=1999, 'D',
+        salary >=0 and salary <=999, 'E'
+    )as grade
+from employees
+order by salary desc;
+
+select
+    salary,
+    employee_id,
+    first_name,
+    decode(
+        trunc(salary/1000),
+        0,'E',
+        1,'D',
+        2,'C',
+        3,'B',
+        'A'
+    )as grade
+from employees
+order by salary desc;
+
+SELECT 
+    salary,
+    employee_id,
+    first_name,
+    (CASE
+        WHEN salary BETWEEN 0 AND 999 THEN 'E'
+        WHEN salary BETWEEN 1000 AND 1999 THEN 'D'
+        WHEN salary BETWEEN 2000 AND 2999 THEN 'C'
+        WHEN salary BETWEEN 3000 AND 3999 THEN 'B'
+        ELSE 'A'
+    END) AS grade
+FROM employees
+ORDER BY salary DESC;
