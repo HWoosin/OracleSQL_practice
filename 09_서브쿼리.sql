@@ -6,6 +6,8 @@
 -해석 할 때는 서브쿼리절 부터 먼저 해석하면 됩니다.
 */
 
+/* 'Nancy'의 급여보다 급여가 많은 사람을 검색하는 문장*/
 select salary from employees where first_name='Nancy';
 
-select * from employees where salary >12008;
+select * from employees 
+where salary >(select salary from employees where first_name='Nancy');
