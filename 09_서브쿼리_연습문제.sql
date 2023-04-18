@@ -42,3 +42,63 @@ select * from
     (select employee_id, concat(first_name, last_name)as name , phone_number, hire_date from employees order by hire_date asc) tbl
     )
 where rn >30 and rn <41;
+/*
+문제 6.
+employees테이블 departments테이블을 left 조인하세요
+조건) 직원아이디, 이름(성, 이름), 부서아이디, 부서명 만 출력합니다.
+조건) 직원아이디 기준 오름차순 정렬
+*/
+select e.employee_id, concat(first_name, last_name)as name, e.department_id, d. department_name
+from employees e left join departments d on e.department_id = d.department_id
+order by employee_id asc;
+/*
+문제 7.
+문제 6의 결과를 (스칼라 쿼리)로 동일하게 조회하세요
+*/
+select e.employee_id, concat(first_name, last_name), e.department_id, 
+(select d.department_name from departments d where e.department_id = d.department_id)
+from employees e
+order by employee_id asc;
+/*
+문제 8.
+departments테이블 locations테이블을 left 조인하세요
+조건) 부서아이디, 부서이름, 매니저아이디, 로케이션아이디, 스트릿_어드레스, 포스트 코드, 시티 만 출력합니다
+조건) 부서아이디 기준 오름차순 정렬
+*/
+select *from departments;
+select *from locations;
+
+select d.department_id, d.department_name, d.manager_id, l.location_id, l.postal_code, l.city
+from departments d left join locations l
+on d.location_id = l.location_id
+order by department_id asc;
+/*
+문제 9.
+문제 8의 결과를 (스칼라 쿼리)로 동일하게 조회하세요
+*/
+select d.department_id, d.department_name, d.manager_id, 
+(select l.location_id from locations l where d.location_id = l.location_id),
+(select l.postal_code from locations l where d.location_id = l.location_id),
+(select l.city from locations l where d.location_id = l.location_id)
+from departments d
+order by department_id asc;
+/*
+문제 10.
+locations테이블 countries 테이블을 left 조인하세요
+조건) 로케이션아이디, 주소, 시티, country_id, country_name 만 출력합니다
+조건) country_name기준 오름차순 정렬
+*/
+select * from countries;
+select *from locations;
+
+select l.location_id, l.street_address, l.city, l.country_id, c.country_name
+from locations l left join countries c on l.country_id = c.country_id
+order by country_name asc;
+/*
+문제 11.
+문제 10의 결과를 (스칼라 쿼리)로 동일하게 조회하세요
+*/
+select l.location_id, l.street_address, l.city, l.country_id, 
+(select c.country_name from countries c where l.country_id = c.country_id) as ctn
+from locations l
+order by ctn asc;
