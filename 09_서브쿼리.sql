@@ -7,7 +7,20 @@
 */
 
 /* 'Nancy'의 급여보다 급여가 많은 사람을 검색하는 문장*/
-select salary from employees where first_name='Nancy';
+select salary from employees where first_name='Nancy';--12008의 값이 나옴
 
 select * from employees 
-where salary >(select salary from employees where first_name='Nancy');
+where salary >(select salary from employees where first_name='Nancy');-- 그걸 여기서 조회함
+
+--employee_id가 103번인 사람과 job_id가 동일한 사람을 검색하는 문장.
+select job_id from employees where employee_id =103;-- IT_PROG
+
+select * from employees 
+where job_id = (select job_id from employees where employee_id =103);
+/*
+아래의 문장은 에러 : 단행 서브쿼리 즉, 하나의 행만 나오는 조건을 써야한다. 여러행 나오면 비교불가.
+아니면 '='를 쓰지마
+*/
+select * from employees 
+where job_id = (select job_id from employees where job_id ='IT_PROG');
+
