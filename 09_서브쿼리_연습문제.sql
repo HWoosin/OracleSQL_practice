@@ -102,3 +102,79 @@ select l.location_id, l.street_address, l.city, l.country_id,
 (select c.country_name from countries c where l.country_id = c.country_id) as ctn
 from locations l
 order by ctn asc;
+
+/*
+문제 12. 
+employees테이블, departments테이블을 left조인 hire_date를 오름차순 기준으로 1-10번째 데이터만 출력합니다
+조건) rownum을 적용하여 번호, 직원아이디, 이름, 전화번호, 입사일, 부서아이디, 부서이름 을 출력합니다.
+조건) hire_date를 기준으로 오름차순 정렬 되어야 합니다. rownum이 틀어지면 안됩니다.
+*/
+select * from
+(select rownum as rn, tbl.*
+from
+(select 
+    e.employee_id, e.first_name, e.phone_number,
+    e.hire_date, d.department_id, d.department_name    
+from employees e 
+left join departments d on e.department_id = d.department_id
+order by hire_date asc) tbl)
+where rn <= 10;
+/*
+문제 13. 
+--EMPLOYEES 과 DEPARTMENTS 테이블에서 JOB_ID가 SA_MAN 사원의 정보의 LAST_NAME, JOB_ID, 
+DEPARTMENT_ID,DEPARTMENT_NAME을 출력하세요.
+*/
+select e.last_name, e.job_id, e.department_id, d.department_name from employees e 
+join departments d on e.department_id = d.department_id
+where job_id ='SA_MAN';
+/*
+문제 14
+--DEPARTMENT테이블에서 각 부서의 ID, NAME, MANAGER_ID와 부서에 속한 인원수를 출력하세요.
+--인원수 기준 내림차순 정렬하세요.
+--사람이 없는 부서는 출력하지 뽑지 않습니다.
+*/
+select tbl.*, d.department_name, d.manager_id
+from departments d 
+join 
+    (select department_id, count(*)as t 
+    from employees 
+    group by department_id)tbl
+on d.department_id = tbl.department_id
+order by tbl.t desc;
+
+/*
+문제 15
+--부서에 대한 정보 전부와, 주소, 우편번호, 부서별 평균 연봉을 구해서 출력하세요.
+--부서별 평균이 없으면 0으로 출력하세요.
+*/
+select d.*, l.street_address, l.postal_code, NVL(tbl.result, 0)
+from departments d
+join locations l
+on d.location_id = l.location_id
+left join 
+    (select 
+        department_id, trunc(avg(salary)) as result
+    from employees group by department_id
+    )tbl
+on d.department_id = tbl.department_id
+;
+/*
+문제 16
+-문제 15 결과에 대해 DEPARTMENT_ID기준으로 내림차순 정렬해서 ROWNUM을 붙여 1-10데이터 까지만
+출력하세요.
+*/
+select *
+    from
+    (select rownum as rn, tbl2.*
+    from
+        (select d.*, l.street_address, l.postal_code, NVL(tbl.result, 0)
+        from departments d
+        join locations l
+        on d.location_id = l.location_id
+        left join 
+            (select 
+                department_id, trunc(avg(salary)) as result
+            from employees group by department_id
+            )tbl
+    on d.department_id = tbl.department_id order by d.department_id desc) tbl2)
+where rn < 11;
