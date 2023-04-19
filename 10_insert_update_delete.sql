@@ -39,3 +39,43 @@ CTAS를 사용하면 제약조건은 NOT NULL말고는 복사되지 않는다.
 제약조건은 업무 규칙을 지키는 데이터만 저장하고, 그렇지 않은 것들이
 DB에 저장되는 것을 방지하는 목적으로 사용
 */
+
+--update를 진행할 때는 누구를 수정할 지 잘 지목해야한다.
+--그렇지 않으면 수정 대상이 테이블 전체로 지목된다.
+update emps set salary = 30000;
+
+update emps set salary = 30000
+where employee_id = 100;
+
+select * from emps;
+
+update emps set salary = salary + salary *0.1
+where employee_id = 100;
+
+update emps set phone_number ='010.3885.5154', manager_id = 102
+where employee_id = 100;
+
+--UPDATE(서브쿼리)
+update emps
+    set (job_id, salary, manager_id)=
+    (select job_id, salary, manager_id
+    from emps
+    where employee_id =100)
+where employee_id =101;
+rollback;
+--delete
+delete from emps
+where employee_id = 103;
+select * from emps;
+
+--사본 테이블 생성
+create table depts as (select * from departments);
+select *from depts;
+
+--delete (서브쿼리)
+delete from emps
+where department_id = (select department_id from depts where department_id =100);
+
+delete from emps
+where department_id = (select department_id from depts where department_name ='IT');
+
