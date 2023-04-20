@@ -93,7 +93,8 @@ create table members(
     GENDER varchar2(1) constraint mem_gender CHECK(GENDER IN('M', 'F')),
     LOCA number(20) constraint mem_loca_loc_locid_fk references locations(location_id)
 );
-select * from members;
+select * from user_constraints
+where table_name ='MEMBERS';
 
 insert into members values ('AAA', 1, '2018-07-01','M',1800);
 insert into members values ('BBB', 2, '2018-07-02','F',1900);
