@@ -9,5 +9,6 @@ create table members(
     mem_age number(2),
     mem_regdate date default sysdate
 );
+alter table members add(email varchar2(20));
 
 select * from members;
